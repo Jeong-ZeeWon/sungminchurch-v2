@@ -53,7 +53,7 @@ if (typeof churchData !== 'undefined') {
   "friday": {
     "date": "8/28(금)",
     "worship": "정지원",
-    "pd": "최명환",
+    "pd": "노태",
     "caption": "박정인",
     "prayer": [
       "박정인",
