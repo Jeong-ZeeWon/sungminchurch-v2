@@ -64,12 +64,29 @@ async function getLines() {
   return lines;
 }
 
-function section(lines, word) {
-  const start = lines.findIndex(l => l.includes(word) && l.includes('담당'));
-  if (start < 0) throw new Error(`${word} section not found.`);
+const sectionKeys = [
+  { name: '새벽기도회', words: ['새벽기도회', '새벽'] },
+  { name: '수요예배', words: ['수요예배', '수요'] },
+  { name: '금요성령집회', words: ['금요성령집회', '금요'] },
+  { name: '주일예배', words: ['주일예배', '주일'] }
+];
+
+function compact(value) {
+  return String(value || '').replace(/\s+/g, '');
+}
+
+function isSectionHeader(line, words) {
+  const text = compact(line);
+  const serviceMatch = words.some(word => text.includes(compact(word)));
+  return serviceMatch && (text.includes('담당') || /\d{1,2}\/\d{1,2}/.test(text));
+}
+
+function section(lines, key) {
+  const start = lines.findIndex(l => isSectionHeader(l, key.words));
+  if (start < 0) throw new Error(`${key.name} section not found.`);
   const out = [];
   for (let i = start; i < lines.length; i++) {
-    if (i > start && /담당/.test(lines[i]) && /(새벽기도회|수요예배|금요성령집회|주일예배)/.test(lines[i])) break;
+    if (i > start && sectionKeys.some(other => other !== key && isSectionHeader(lines[i], other.words))) break;
     out.push(lines[i]);
   }
   return out;
@@ -141,10 +158,11 @@ function worshipSection(lines, keys) {
 }
 
 const lines = await getLines();
-const dawn = section(lines, '새벽기도회');
-const wed = section(lines, '수요예배');
-const fri = section(lines, '금요성령집회');
-const sun = section(lines, '주일예배');
+const [dawnKey, wedKey, friKey, sunKey] = sectionKeys;
+const dawn = section(lines, dawnKey);
+const wed = section(lines, wedKey);
+const fri = section(lines, friKey);
+const sun = section(lines, sunKey);
 
 const leaders = {
   title: '한 주간 예배 담당자',
