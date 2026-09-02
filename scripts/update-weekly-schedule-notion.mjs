@@ -75,6 +75,11 @@ function addDays(date, n) {
 
 function md(d) { return `${d.getMonth() + 1}/${d.getDate()}`; }
 
+function normalizeDateCell(value) {
+  const match = String(value || '').match(/(\d{1,2})\s*(?:\/|월)\s*(\d{1,2})/);
+  return match ? `${Number(match[1])}/${Number(match[2])}` : '';
+}
+
 const today = todayKST();
 const allowOverride = process.env.OVERRIDE_DOW === '1';
 if (![5, 6].includes(today.getDay()) && !allowOverride) {
@@ -170,7 +175,7 @@ async function buildFri() {
     if (!t[0].some(c => c.includes('날짜') || c.includes('찬양') || c.includes('기도용사'))) continue;
     for (let i = 1; i < t.length; i++) {
       const r = t[i];
-      const dateCell = String(r[0] || '').replace(/[^0-9/]/g, '');
+      const dateCell = normalizeDateCell(r[0]);
       if (dateCell === friStr) {
         return `${friStr}(금) 금요성령집회 담당\n찬양: ${r[1]}\nPD: ${r[2]}\n자막: ${r[3]}\n기도용사: ${r[4]}`;
       }
@@ -199,13 +204,14 @@ async function buildNations() {
   for (const t of tables) {
     for (let i = 1; i < t.length; i++) {
       const r = t[i];
-      if (r[0] === sunStr) {
+      if (normalizeDateCell(r[0]) === sunStr) {
         const f = v => (String(v || '').trim() || '미정');
         return `${sunStr}(일) 열방예배 담당\n사회: ${f(r[1])}\n찬양: ${f(r[2])}\n영상/송출: ${f(r[3])}\n자막: ${f(r[4])}\n특순: ${f(r[5])}\n대표기도: ${f(r[6])}`;
       }
     }
   }
-  throw new Error(`Nations row not found for ${sunStr}`);
+  console.warn(`Nations row not found for ${sunStr}; using 미정 placeholders.`);
+  return `${sunStr}(일) 열방예배 담당\n사회: 미정\n찬양: 미정\n영상/송출: 미정\n자막: 미정\n특순: 미정\n대표기도: 미정`;
 }
 
 const sections = [];
