@@ -1,6 +1,6 @@
 // 노션 「한 주간 예배 담당자」 페이지 자동 갱신
 // 매주 금요일 23:17/23:47 KST에 GitHub Actions가 실행
-// 5개 소스 페이지를 읽어 다음 주(월~토) + 다음 주 일요일 데이터를 추출해 타겟 페이지를 교체
+// 4개 소스 페이지를 읽어 다음 주(월~토) + 다음 주 일요일 데이터를 추출해 타겟 페이지를 교체
 
 import process from 'node:process';
 
@@ -13,7 +13,6 @@ const SOURCES = {
   wed:     '2e15e604d8c6802f8284dd7ccc553b4f',
   fri:     '2e35e604d8c681df8d57cdbab62ed6ec',
   sun:     '2df5e604d8c6816481c6f31a7070a2d4',
-  nations: '2e75e604d8c68020923dd6eeedbdcbcb',
 };
 
 const DAYS = ['월','화','수','목','금','토'];
@@ -199,27 +198,11 @@ async function buildSun() {
   throw new Error(`Sun row not found for ${sunStr}`);
 }
 
-async function buildNations() {
-  const tables = await getTables(SOURCES.nations);
-  for (const t of tables) {
-    for (let i = 1; i < t.length; i++) {
-      const r = t[i];
-      if (normalizeDateCell(r[0]) === sunStr) {
-        const f = v => (String(v || '').trim() || '미정');
-        return `${sunStr}(일) 열방예배 담당\n사회: ${f(r[1])}\n찬양: ${f(r[2])}\n영상/송출: ${f(r[3])}\n자막: ${f(r[4])}\n특순: ${f(r[5])}\n대표기도: ${f(r[6])}`;
-      }
-    }
-  }
-  console.warn(`Nations row not found for ${sunStr}; using 미정 placeholders.`);
-  return `${sunStr}(일) 열방예배 담당\n사회: 미정\n찬양: 미정\n영상/송출: 미정\n자막: 미정\n특순: 미정\n대표기도: 미정`;
-}
-
 const sections = [];
 sections.push(await buildDawn());
 sections.push(await buildWed());
 sections.push(await buildFri());
 sections.push(await buildSun());
-sections.push(await buildNations());
 
 console.log('\n----- Generated content -----');
 for (const s of sections) console.log(s + '\n---');

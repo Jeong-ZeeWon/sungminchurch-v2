@@ -69,7 +69,7 @@ function section(lines, word) {
   if (start < 0) throw new Error(`${word} section not found.`);
   const out = [];
   for (let i = start; i < lines.length; i++) {
-    if (i > start && /담당/.test(lines[i]) && /(새벽기도회|수요예배|금요성령집회|주일예배|열방예배)/.test(lines[i])) break;
+    if (i > start && /담당/.test(lines[i]) && /(새벽기도회|수요예배|금요성령집회|주일예배)/.test(lines[i])) break;
     out.push(lines[i]);
   }
   return out;
@@ -145,14 +145,13 @@ const dawn = section(lines, '새벽기도회');
 const wed = section(lines, '수요예배');
 const fri = section(lines, '금요성령집회');
 const sun = section(lines, '주일예배');
-const nations = section(lines, '열방예배');
 
 const leaders = {
   title: '한 주간 예배 담당자',
   subtitle: '이번 주 예배 담당자',
   icon: '👥',
   color: 'ldr',
-  description: '이번 주 새벽·수요·금요·주일·열방 예배 담당자',
+  description: '이번 주 새벽·수요·금요·주일 예배 담당자',
   week: weekLabel(dawn[0]),
   dawn: {
     days: dayNames,
@@ -181,14 +180,6 @@ const leaders = {
     { label: '1부 PD', prop: 'firstPd' },
     { label: '1부 자막', prop: 'firstCaption' },
     { label: '2부 PD', prop: 'secondPd' }
-  ]),
-  nations: worshipSection(nations, [
-    { label: '사회', prop: 'host' },
-    { label: '찬양', prop: 'worship' },
-    { label: '영상/송출', prop: 'video' },
-    { label: '자막', prop: 'caption' },
-    { label: '특순', prop: 'special' },
-    { label: '대표기도', prop: 'prayer' }
   ])
 };
 

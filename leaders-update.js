@@ -7,7 +7,7 @@ if (typeof churchData !== 'undefined') {
   "subtitle": "이번 주 예배 담당자",
   "icon": "👥",
   "color": "ldr",
-  "description": "이번 주 새벽·수요·금요·주일·열방 예배 담당자",
+  "description": "이번 주 새벽·수요·금요·주일 예배 담당자",
   "week": "8/24 — 8/29",
   "dawn": {
     "days": [
@@ -69,15 +69,6 @@ if (typeof churchData !== 'undefined') {
     "firstPd": "박정인",
     "firstCaption": "최명환",
     "secondPd": "박정인"
-  },
-  "nations": {
-    "date": "8/30(일)",
-    "host": "최명환",
-    "worship": "정지원",
-    "video": "노태규",
-    "caption": "박정인",
-    "special": "해외팀 연합특순",
-    "prayer": "조정구 장로"
   }
 };
 }
