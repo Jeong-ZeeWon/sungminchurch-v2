@@ -27,19 +27,19 @@ if (typeof churchData !== 'undefined') {
       "정지원"
     ],
     "caption": [
+      "노태규",
       "",
-      "",
-      "",
+      "노태규",
       "박정인",
       "박정인",
       "박정인"
     ],
     "accomp": [
+      "김진희",
       "",
-      "",
-      "",
-      "",
-      "",
+      "사모님",
+      "김진희",
+      "사모님",
       "최우진"
     ]
   },
@@ -47,8 +47,8 @@ if (typeof churchData !== 'undefined') {
     "date": "9/2(수)",
     "preacher": "목사님",
     "worship": "정지원",
-    "sound": "",
-    "pd": ""
+    "sound": "최명환",
+    "pd": "최명환"
   },
   "friday": {
     "date": "9/4(금)",
