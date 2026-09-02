@@ -93,7 +93,13 @@ function section(lines, key) {
 }
 
 function after(lines, key) {
-  const line = lines.find(l => l.startsWith(`${key}:`));
+  const wanted = compact(key);
+  const line = lines.find(l => {
+    const idx = l.indexOf(':');
+    if (idx < 0) return false;
+    const label = compact(l.slice(0, idx));
+    return label === wanted || label.includes(wanted);
+  });
   return line ? line.slice(line.indexOf(':') + 1).trim() : '';
 }
 
@@ -119,7 +125,7 @@ function dateLabel(header) {
 
 function expandDays(spec) {
   const out = [];
-  for (const raw of String(spec || '').split(',')) {
+  for (const raw of String(spec || '').split(/[,\u00b7·ㆍ，]+/)) {
     const p = raw.trim();
     const range = p.match(/^([월화수목금토])\s*[-–—~]\s*([월화수목금토])$/);
     if (range) {
