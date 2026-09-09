@@ -159,7 +159,7 @@ async function buildWed() {
   const tables = await getTables(SOURCES.wed);
   for (const t of tables) {
     for (const row of t) {
-      if (row[0] === wedStr) {
+      if (normalizeDateCell(row[0]) === wedStr) {
         return `${wedStr}(수) 수요예배 담당\n설교: ${stripTitle(row[1])}\n찬양: ${stripTitle(row[2])}\n음향: ${stripTitle(row[3])}\nPD: ${stripTitle(row[4])}`;
       }
     }
@@ -188,7 +188,7 @@ async function buildSun() {
   for (const t of tables) {
     for (let i = 1; i < t.length; i++) {
       const r = t[i];
-      if (r[0] === sunStr) {
+      if (normalizeDateCell(r[0]) === sunStr) {
         // 컬럼: 날짜, 1부사회, 2부사회, 3부사회, (빈), 1부 pd, 1부 자막, (빈), 2부 pd
         const sec3 = r[3], col5 = r[5], col6 = r[6], col8 = r[8];
         return `${sunStr}(일) 주일예배 담당\n1부 사회: ${r[1]}\n2부 사회: ${r[2]}\n3부 사회: ${sec3}\n1부 PD: ${col5}\n1부 자막: ${col6}\n2부 PD: ${col8}`;
